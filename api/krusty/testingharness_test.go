@@ -59,8 +59,9 @@ func (th testingHarness) MakeDefaultOptions() Options {
 // This has no impact on Builtin plugins, as they are always enabled.
 func (th testingHarness) MakeOptionsPluginsDisabled() Options {
 	return Options{
-		LoadRestrictions: types.LoadRestrictionsRootOnly,
-		PluginConfig:     konfig.DisabledPluginConfig(),
+		RerorderTransformer: "none",
+		LoadRestrictions:    types.LoadRestrictionsRootOnly,
+		PluginConfig:        konfig.DisabledPluginConfig(),
 	}
 }
 
@@ -76,8 +77,9 @@ func (th testingHarness) MakeOptionsPluginsEnabled() Options {
 		th.t.Fatal(err)
 	}
 	return Options{
-		LoadRestrictions: types.LoadRestrictionsRootOnly,
-		PluginConfig:     c,
+		RerorderTransformer: "none",
+		LoadRestrictions:    types.LoadRestrictionsRootOnly,
+		PluginConfig:        c,
 	}
 }
 
