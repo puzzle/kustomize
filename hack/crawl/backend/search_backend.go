@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
-	"sigs.k8s.io/kustomize/api/internal/crawl/index"
+	"sigs.k8s.io/kustomize/crawl/index"
 )
 
 type kustomizeSearch struct {

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"sigs.k8s.io/kustomize/api/internal/crawl/doc"
+	"sigs.k8s.io/kustomize/crawl/doc"
 )
 
 const (
