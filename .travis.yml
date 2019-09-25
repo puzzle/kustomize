@@ -1,8 +1,8 @@
 os:
   - linux
-  - osx
 # TODO: Speed up the slowness of the osx travis runs
 # Maybe cache brew installs?
+#  - osx
 #
 # TODO: Uncomment when some gets the tests running on Windows.
 #  - windows
@@ -35,7 +35,6 @@ install: true
 
 script:
   - ./travis/pre-commit.sh
-  - ./travis/kyaml-pre-commit.sh
 
 # TBD. Suppressing for now.
 notifications:

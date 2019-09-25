@@ -29,10 +29,11 @@ if [ ! -d "$dir" ]; then
 fi
 
 for goMod in $(find ./plugin/builtin -name 'go.mod'); do
-  dir=$(dirname "${goMod}")
-  (cd $dir; GOPATH=$myGoPath go generate ./...)
-  echo "Formatting $dir"
-  (cd $dir; GOPATH=$myGoPath go fmt ./...)
+  pdir=$(dirname "${goMod}")
+  (cd $pdir; GOPATH=$myGoPath go generate ./...)
 done
+
+echo "Formatting $dir/api/builtins"
+(cd $dir/api; GOPATH=$myGoPath go fmt ./builtins/...)
 
 echo All done.
