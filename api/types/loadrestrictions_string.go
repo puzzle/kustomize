@@ -13,13 +13,13 @@ func _() {
 	_ = x[LoadRestrictionsNone-2]
 }
 
-const _LoadRestrictions_name = "LoadRestrictionsUnknownLoadRestrictionsRootOnlyLoadRestrictionsNone"
+const _LoadRestrictionsName = "LoadRestrictionsUnknownLoadRestrictionsRootOnlyLoadRestrictionsNone"
 
-var _LoadRestrictions_index = [...]uint8{0, 23, 47, 67}
+var _LoadRestrictionsIndex = [...]uint8{0, 23, 47, 67}
 
 func (i LoadRestrictions) String() string {
-	if i < 0 || i >= LoadRestrictions(len(_LoadRestrictions_index)-1) {
+	if i < 0 || i >= LoadRestrictions(len(_LoadRestrictionsIndex)-1) {
 		return "LoadRestrictions(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
-	return _LoadRestrictions_name[_LoadRestrictions_index[i]:_LoadRestrictions_index[i+1]]
+	return _LoadRestrictionsName[_LoadRestrictionsIndex[i]:_LoadRestrictionsIndex[i+1]]
 }

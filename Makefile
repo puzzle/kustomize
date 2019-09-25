@@ -8,8 +8,13 @@
 # gradually being moved here.
 
 MYGOBIN := $(shell go env GOPATH)/bin
-PATH := $(PATH):$(MYGOBIN)
+TOOLSBIN := $(PWD)/hack/tools/bin
+PATH := $(TOOLSBIN):$(MYGOBIN):$(PATH)
 SHELL := env PATH=$(PATH) /bin/bash
+
+.DEFAULT_GOAL := all
+
+export GO111MODULE=on
 
 .PHONY: all
 all: pre-commit
@@ -22,13 +27,13 @@ all: pre-commit
 pre-commit:
 	./travis/pre-commit.sh
 
-$(MYGOBIN)/golangci-lint:
-	cd api; \
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint
+$(TOOLSBIN)/golangci-lint:
+	cd hack/tools; \
+	GOBIN=$(TOOLSBIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
-$(MYGOBIN)/mdrip:
-	cd api; \
-	go install github.com/monopole/mdrip
+$(TOOLSBIN)/mdrip:
+	cd hack/tools; \
+	GOBIN=$(TOOLSBIN) go install github.com/monopole/mdrip
 
 # TODO: need a new release of the API, followed by a new pluginator.
 # pluginator v1.1.0 is too old for the code currently needed in the API.
@@ -36,26 +41,26 @@ $(MYGOBIN)/mdrip:
 # When one has been released,
 #  - uncomment the pluginator line in './api/internal/tools/tools.go'
 #  - pin the version tag in './api/go.mod' to match the new release
-#  - change the following to 'cd api; go install sigs.k8s.io/kustomize/pluginator'
-$(MYGOBIN)/pluginator:
+#  - change the following to 'cd api; GOBIN=$(MYGOBIN) go install sigs.k8s.io/kustomize/pluginator'
+$(TOOLSBIN)/pluginator:
 	cd pluginator; \
-	go install .
+	GOBIN=$(TOOLSBIN) go install .
 
-$(MYGOBIN)/stringer:
-	cd api; \
-	go install golang.org/x/tools/cmd/stringer
+$(TOOLSBIN)/stringer:
+	cd hack/tools; \
+	GOBIN=$(TOOLSBIN) go install golang.org/x/tools/cmd/stringer
 
 # Specific version tags for these utilities are pinned
 # in ./api/go.mod, which seems to be as good a place as
 # any to do so.  That's the reason for all the occurances
-# of 'cd api;' in the dependencies; 'go install' uses the
+# of 'cd hack/tools;' in the dependencies; 'GOBIN=$(TOOLSBIN) go install' uses the
 # local 'go.mod' to find the correct version to install.
 .PHONY: install-tools
 install-tools: \
-	$(MYGOBIN)/golangci-lint \
-	$(MYGOBIN)/mdrip \
-	$(MYGOBIN)/pluginator \
-	$(MYGOBIN)/stringer
+	$(TOOLSBIN)/golangci-lint \
+	$(TOOLSBIN)/mdrip \
+	$(TOOLSBIN)/pluginator \
+	$(TOOLSBIN)/stringer
 
 # Builtin plugins are generated code.
 # Add new items here to create new builtins.
@@ -77,12 +82,12 @@ builtinplugins = \
 
 .PHONY: lint
 lint: install-tools $(builtinplugins)
-	cd api; $(MYGOBIN)/golangci-lint run ./...
-	cd kustomize; $(MYGOBIN)/golangci-lint run ./...
-	cd pluginator; $(MYGOBIN)/golangci-lint run ./...
+	cd api; $(TOOLSBIN)/golangci-lint run ./...
+	cd kustomize; $(TOOLSBIN)/golangci-lint run ./...
+	cd pluginator; $(TOOLSBIN)/golangci-lint run ./...
 
 # pluginator consults the GOPATH env var to write generated code.
-api/builtins/%.go: $(MYGOBIN)/pluginator
+api/builtins/%.go: $(TOOLSBIN)/pluginator
 	@echo "generating $*"; \
 	cd plugin/builtin/$*; \
 	GOPATH=$(shell pwd)/../../.. go generate ./...; \
@@ -106,23 +111,87 @@ unit-test-kustomize:
 .PHONY: unit-test-all
 unit-test-all: unit-test-api unit-test-kustomize unit-test-plugins
 
+COVER_FILE=coverage.out
+
+.PHONY: cover
+cover:
+	# The plugin directory eludes coverage, and is therefore omitted
+	cd api && go test ./... -coverprofile=$(COVER_FILE) && \
+	go tool cover -html=$(COVER_FILE)
+
+.PHONY: unit-tests
+unit-tests: unit-tests-api unit-tests-kustomize unit-tests-plugins
+
 # linux only.
-$(MYGOBIN)/kubeval:
+.PHONY: $(TOOLSBIN)/kubeval
+$(TOOLSBIN)/kubeval:
 	d=$(shell mktemp -d); cd $$d; \
 	wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz; \
 	tar xf kubeval-linux-amd64.tar.gz; \
-	mv kubeval $(MYGOBIN); \
+	mv kubeval $(TOOLSBIN); \
 	rm -rf $$d
 
 # linux only.
-$(MYGOBIN)/helm:
+.PHONY: $(TOOLSBIN)/helm
+$(TOOLSBIN)/helm:
 	d=$(shell mktemp -d); cd $$d; \
-	wget https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-linux-amd64.tar.gz; \
-	tar -xvzf helm-v2.13.1-linux-amd64.tar.gz; \
-	mv linux-amd64/helm $(MYGOBIN); \
+	wget https://storage.googleapis.com/kubernetes-helm/helm-v2.16.0-linux-amd64.tar.gz; \
+	tar -xvzf helm-v2.16.0-linux-amd64.tar.gz; \
+	mv linux-amd64/helm $(TOOLSBIN); \
 	rm -rf $$d
+
+.PHONY: fmt-api
+fmt-api:
+	cd api; go fmt ./...
+
+.PHONY: fmt-kustomize
+fmt-kustomize:
+	cd kustomize; go fmt ./...
+
+.PHONY: fmt-pluginator
+fmt-pluginator:
+	cd pluginator; go fmt ./...
+
+.PHONY: fmt-plugins
+fmt-plugins:
+	cd plugin/builtin/prefixsuffixtransformer && go fmt ./...
+	cd plugin/builtin/replicacounttransformer && go fmt ./...
+	cd plugin/builtin/patchstrategicmergetransformer && go fmt ./...
+	cd plugin/builtin/imagetagtransformer && go fmt ./...
+	cd plugin/builtin/namespacetransformer && go fmt ./...
+	cd plugin/builtin/labeltransformer && go fmt ./...
+	cd plugin/builtin/legacyordertransformer && go fmt ./...
+	cd plugin/builtin/patchtransformer && go fmt ./...
+	cd plugin/builtin/configmapgenerator && go fmt ./...
+	cd plugin/builtin/inventorytransformer && go fmt ./...
+	cd plugin/builtin/annotationstransformer && go fmt ./...
+	cd plugin/builtin/secretgenerator && go fmt ./...
+	cd plugin/builtin/patchjson6902transformer && go fmt ./...
+	cd plugin/builtin/hashtransformer && go fmt ./...
+
+.PHONY: fmt
+fmt: fmt-api fmt-kustomize fmt-pluginator fmt-plugins
+
+.PHONY: modules
+modules:
+	./hack/doGoMod.sh tidy
+
+## --------------------------------------
+## Binaries
+## --------------------------------------
+
+.PHONY: build
+build:
+	cd pluginator && go build -o $(PLUGINATOR_NAME) .
+	cd kustomize && go build -o $(KUSTOMIZE_NAME) ./main.go
+
+.PHONY: install
+install:
+	cd pluginator && GOBIN=$(TOOLSBIN) go install $(PWD)/pluginator
+	cd kustomize && GOBIN=$(MYGOBIN) go install $(PWD)/kustomize
 
 .PHONY: clean
 clean:
+	rm -f api/$(COVER_FILE)
 	rm -f $(builtinplugins)
-	rm -f $(MYGOBIN)/pluginator
+	rm -fr $(TOOLSBIN)

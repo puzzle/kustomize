@@ -6,15 +6,15 @@ set -e
 rcAccumulator=0
 
 function removeBin {
-  local d=$(go env GOPATH)/bin/$1
+  local d=${TOOLSBIN}/$1
   echo "Removing binary $d"
   /bin/rm -f $d
 }
 
 function installTools {
   make install-tools
-  MDRIP=$(go env GOPATH)/bin/mdrip
-  ls -l $(go env GOPATH)/bin
+  MDRIP=${TOOLSBIN}/mdrip
+  ls -l ${TOOLSBIN}
 }
 
 function runFunc {
@@ -48,7 +48,7 @@ function testExamplesAgainstLatestKustomizeRelease {
 
   local latest=sigs.k8s.io/kustomize/kustomize/v3
   echo "Installing latest kustomize from $latest"
-  (cd ~; GO111MODULE=on go install $latest)
+  (cd ~; GO111MODULE=on GOBIN=${TOOLSBIN} go install $latest)
 
   $MDRIP --mode test \
       --label testAgainstLatestRelease examples
@@ -58,7 +58,7 @@ function testExamplesAgainstLatestKustomizeRelease {
     echo "On linux, and not on travis, so running the notravis example tests."
 
     # Requires helm.
-    make $(go env GOPATH)/bin/helm
+    make ${TOOLSBIN}/helm
     $MDRIP --mode test \
         --label helmtest examples/chart.md
   fi
@@ -69,7 +69,7 @@ function testExamplesAgainstLocalHead {
   removeBin kustomize
 
   echo "Installing kustomize from HEAD"
-  (cd kustomize; go install .)
+  (cd kustomize; GO111MODULE=on GOBIN=${TOOLSBIN} go install .)
 
   # To test examples of unreleased features, add
   # examples with code blocks annotated with some
@@ -87,7 +87,9 @@ unset GOPATH
 # puts $HOME/go/bin on the path. Regardless,
 # subsequent go tool installs will be placing
 # binaries in this location.
-PATH=$(go env GOPATH)/bin:$PATH
+MYGOBIN=$(go env GOPATH)/bin
+TOOLSBIN=`pwd`/hack/tools/bin
+PATH=${TOOLSBIN}:${MYGOBIN}:${PATH}
 
 # Make sure we run in the root of the repo and
 # therefore run the tests on all packages

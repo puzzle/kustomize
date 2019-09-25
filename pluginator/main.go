@@ -12,8 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"sigs.k8s.io/kustomize/api/pgmconfig"
-	"sigs.k8s.io/kustomize/api/plugins/config"
+	"sigs.k8s.io/kustomize/api/konfig"
 	"sigs.k8s.io/kustomize/api/provenance"
 )
 
@@ -62,7 +61,7 @@ func main() {
 		if strings.HasPrefix(l, "//noinspection") {
 			continue
 		}
-		if l == "var "+config.PluginSymbol+" plugin" {
+		if l == "var "+konfig.PluginSymbol+" plugin" {
 			continue
 		}
 		if strings.Contains(l, " Transform(") {
@@ -124,8 +123,8 @@ func makeOutputFileName(root string) string {
 	return filepath.Join(
 		os.Getenv("GOPATH"),
 		"src",
-		pgmconfig.DomainName,
-		pgmconfig.ProgramName,
+		"sigs.k8s.io",
+		konfig.ProgramName,
 		"api",
 		packageForGeneratedCode,
 		strings.ToLower(root)+".go")

@@ -78,7 +78,7 @@ data:
           "type": "string"
         },
         "metadata": {
-          "$ref": "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ObjectMeta"
+          "$ref": "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"
         },
         "spec": {
           "$ref": "github.com/example/pkg/apis/jingfang/v1beta1.BeeSpec"
@@ -91,7 +91,7 @@ data:
     "Dependencies": [
       "github.com/example/pkg/apis/jingfang/v1beta1.BeeSpec",
       "github.com/example/pkg/apis/jingfang/v1beta1.BeeStatus",
-      "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ObjectMeta"
+      "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"
     ]
   },
   "github.com/example/pkg/apis/jingfang/v1beta1.BeeList": {
@@ -115,13 +115,13 @@ data:
           "type": "string"
         },
         "metadata": {
-          "$ref": "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ListMeta"
+          "$ref": "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"
         }
       }
     },
     "Dependencies": [
       "github.com/example/pkg/apis/jingfang/v1beta1.Bee",
-      "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ListMeta"
+      "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"
     ]
   },
   "github.com/example/pkg/apis/jingfang/v1beta1.BeeObjectReference": {
@@ -159,7 +159,7 @@ data:
           "type": "string"
         },
         "metadata": {
-          "$ref": "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ObjectMeta"
+          "$ref": "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"
         },
         "spec": {
           "$ref": "github.com/example/pkg/apis/jingfang/v1beta1.MyKindSpec"
@@ -172,7 +172,7 @@ data:
     "Dependencies": [
       "github.com/example/pkg/apis/jingfang/v1beta1.MyKindSpec",
       "github.com/example/pkg/apis/jingfang/v1beta1.MyKindStatus",
-      "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ObjectMeta"
+      "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"
     ]
   },
   "github.com/example/pkg/apis/jingfang/v1beta1.MyKindList": {
@@ -196,13 +196,13 @@ data:
           "type": "string"
         },
         "metadata": {
-          "$ref": "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ListMeta"
+          "$ref": "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"
         }
       }
     },
     "Dependencies": [
       "github.com/example/pkg/apis/jingfang/v1beta1.MyKind",
-      "sigs.k8s.io/kustomize/pseudo/k8s/apimachinery/pkg/apis/meta/v1.ListMeta"
+      "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"
     ]
   },
   "github.com/example/pkg/apis/jingfang/v1beta1.MyKindSpec": {
@@ -218,13 +218,13 @@ data:
           "description": "If defined, use this secret for configuring the MYSQL_ROOT_PASSWORD",
           "x-kubernetes-object-ref-api-version": "v1",
           "x-kubernetes-object-ref-kind": "Secret",
-          "$ref": "sigs.k8s.io/kustomize/pseudo/k8s/api/core/v1.LocalObjectReference"
+          "$ref": "k8s.io/api/core/v1.LocalObjectReference"
         }
       }
     },
     "Dependencies": [
       "github.com/example/pkg/apis/jingfang/v1beta1.BeeObjectReference",
-      "sigs.k8s.io/kustomize/pseudo/k8s/api/core/v1.LocalObjectReference"
+      "k8s.io/api/core/v1.LocalObjectReference"
     ]
   },
   "github.com/example/pkg/apis/jingfang/v1beta1.MyKindStatus": {
