@@ -14,7 +14,8 @@ import (
 	"sigs.k8s.io/kustomize/api/k8sdeps/validator"
 	"sigs.k8s.io/kustomize/api/konfig"
 	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands/build"
-	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands/config"
+
+	// "sigs.k8s.io/kustomize/kustomize/v3/internal/commands/config"
 	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands/create"
 	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands/edit"
 	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands/version"
@@ -39,7 +40,7 @@ See https://sigs.k8s.io/kustomize
 		build.NewCmdBuild(stdOut),
 		edit.NewCmdEdit(fSys, v, uf),
 		create.NewCmdCreate(fSys, uf),
-		config.NewCmdConfig(fSys),
+		// config.NewCmdConfig(fSys),
 		version.NewCmdVersion(stdOut),
 	)
 	c.PersistentFlags().AddGoFlagSet(flag.CommandLine)
