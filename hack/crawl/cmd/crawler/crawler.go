@@ -7,11 +7,11 @@ import (
 	"os"
 	"time"
 
-	"sigs.k8s.io/kustomize/api/internal/crawl/crawler"
-	"sigs.k8s.io/kustomize/api/internal/crawl/crawler/github"
-	"sigs.k8s.io/kustomize/api/internal/crawl/doc"
-	"sigs.k8s.io/kustomize/api/internal/crawl/httpclient"
-	"sigs.k8s.io/kustomize/api/internal/crawl/index"
+	"sigs.k8s.io/kustomize/crawl/crawler"
+	"sigs.k8s.io/kustomize/crawl/crawler/github"
+	"sigs.k8s.io/kustomize/crawl/doc"
+	"sigs.k8s.io/kustomize/crawl/httpclient"
+	"sigs.k8s.io/kustomize/crawl/index"
 
 	"github.com/gomodule/redigo/redis"
 )

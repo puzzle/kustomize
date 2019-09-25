@@ -12,7 +12,7 @@ import (
 
 	_ "github.com/gomodule/redigo/redis"
 
-	"sigs.k8s.io/kustomize/api/internal/crawl/doc"
+	"sigs.k8s.io/kustomize/crawl/doc"
 )
 
 var (

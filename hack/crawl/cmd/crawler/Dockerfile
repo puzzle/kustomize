@@ -2,8 +2,8 @@ FROM golang:1.11 AS build
 
 ARG GO111MODULE=on
 
-WORKDIR /go/src/sigs.k8s.io/kustomize/api/internal/crawl
-COPY . /go/src/sigs.k8s.io/kustomize//api/internal/crawl
+WORKDIR /go/src/sigs.k8s.io/kustomize/hack/crawl
+COPY . /go/src/sigs.k8s.io/kustomize/hack/crawl
 
 RUN go mod download
 RUN CGO_ENABLED=0 go install -v ./cmd/crawler/crawler.go
