@@ -180,6 +180,10 @@ modules:
 ## Binaries
 ## --------------------------------------
 
+.PHONY: build-plugins
+build-plugins:
+	./plugin/buildPlugins.sh $(GOPATH)
+
 .PHONY: build
 build:
 	cd pluginator && go build -o $(PLUGINATOR_NAME) .
