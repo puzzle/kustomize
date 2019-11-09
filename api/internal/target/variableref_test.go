@@ -522,7 +522,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: cockroachdb
+  name: cluster-cockroachdb
   labels:
     app: cockroachdb
 rules:
@@ -559,7 +559,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cockroachdb
+  name: cluster-cockroachdb
 subjects:
 - kind: ServiceAccount
   name: cockroachdb
@@ -724,7 +724,7 @@ kind: ClusterRole
 metadata:
   labels:
     app: cockroachdb
-  name: dev-base-cockroachdb
+  name: dev-base-cluster-cockroachdb
 rules:
 - apiGroups:
   - certificates.k8s.io
@@ -759,7 +759,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: dev-base-cockroachdb
+  name: dev-base-cluster-cockroachdb
 subjects:
 - kind: ServiceAccount
   name: dev-base-cockroachdb
