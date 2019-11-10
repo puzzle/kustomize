@@ -78,7 +78,9 @@ builtinplugins = \
 	api/builtins/patchtransformer.go \
 	api/builtins/prefixsuffixtransformer.go \
 	api/builtins/replicacounttransformer.go \
-	api/builtins/secretgenerator.go
+	api/builtins/secretgenerator.go \
+	api/builtins/kindordertransformer.go \
+	api/builtins/kindfiltertransformer.go
 
 .PHONY: lint
 lint: install-tools $(builtinplugins)
@@ -168,6 +170,8 @@ fmt-plugins:
 	cd plugin/builtin/secretgenerator && go fmt ./...
 	cd plugin/builtin/patchjson6902transformer && go fmt ./...
 	cd plugin/builtin/hashtransformer && go fmt ./...
+	cd plugin/builtin/kindordertransformer && go fmt ./...
+	cd plugin/builtin/kindfiltertransformer && go fmt ./...
 
 .PHONY: fmt
 fmt: fmt-api fmt-kustomize fmt-pluginator fmt-plugins
