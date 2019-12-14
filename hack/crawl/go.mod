@@ -1,4 +1,4 @@
-module sigs.k8s.io/kustomize/api/internal/crawl
+module sigs.k8s.io/kustomize/crawl
 
 go 1.13
 
@@ -9,5 +9,6 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
 	github.com/rs/cors v1.7.0
 	sigs.k8s.io/kustomize/api v0.3.0
+	sigs.k8s.io/kustomize/api/internal/crawl v0.0.0-20191213230335-75e9079baaad
 	sigs.k8s.io/yaml v1.1.0
 )

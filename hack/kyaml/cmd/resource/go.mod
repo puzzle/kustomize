@@ -14,6 +14,6 @@ require (
 )
 
 replace (
-	sigs.k8s.io/kustomize/kstatus v0.0.0-20191204200457-7c1b477ff62d => ../../kstatus
+	sigs.k8s.io/kustomize/kstatus v0.0.0-20191204200457-7c1b477ff62d => ../../../kstatus/
 	sigs.k8s.io/kustomize/kyaml v0.0.0-20191202204815-0a19a5dbd9b8 => ../../kyaml
 )
