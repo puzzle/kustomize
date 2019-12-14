@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"sigs.k8s.io/kustomize/cmd/config/complete"
+	// "sigs.k8s.io/kustomize/cmd/config/complete"
 	"sigs.k8s.io/kustomize/kustomize/v3/internal/commands"
 )
 
@@ -25,7 +25,7 @@ func main() {
 
 // completion performs shell completion if kustomize is being called to provide
 // shell completion commands.
-func completion(cmd *cobra.Command) {
+func completion(_ *cobra.Command) {
 	// bash shell completion passes the command name as the first argument
 	// do this after configuring cmd so it has all the subcommands
 	if len(os.Args) > 1 {
@@ -33,7 +33,7 @@ func completion(cmd *cobra.Command) {
 		name := filepath.Base(os.Args[1])
 		if name == "kustomize" {
 			// complete calls kustomize with itself as an argument
-			complete.Complete(cmd).Complete("kustomize")
+			// complete.Complete(cmd).Complete("kustomize")
 			os.Exit(0)
 		}
 	}
